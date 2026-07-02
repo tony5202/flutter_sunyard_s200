@@ -104,6 +104,54 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('Print QR')),
                 ),
               ),
+              const SizedBox(height: 16),
+              Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                      onPressed: () {
+                        printFullTestReceipt();
+                      },
+                      child: const Text('📋 Print Full Receipt Test')),
+                ),
+              ),
+              const SizedBox(height: 8),
+              // ปุ่มทดสอบแยก
+              Row(
+                children: [
+                  Expanded(
+                    child: FilledButton(
+                        onPressed: () {
+                          testPrintText();
+                        },
+                        child: const Text('Text')),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FilledButton(
+                        onPressed: () {
+                          testPrintBarcode();
+                        },
+                        child: const Text('Barcode')),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FilledButton(
+                        onPressed: () {
+                          testPrintQR();
+                        },
+                        child: const Text('QR')),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FilledButton(
+                        onPressed: () {
+                          testPrintImage();
+                        },
+                        child: const Text('Image')),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -183,5 +231,271 @@ class _MyAppState extends State<MyApp> {
     );
 
     await s200.Printer.startPrint();
+  }
+
+  // ========== ฟังก์ชันทดสอบพิมพ์แบบครบทุกฟีเจอร์ ==========
+  void printFullTestReceipt() async {
+    try {
+      // ตรวจสอบว่าเครื่องพิมพ์พร้อม
+      final isPrinterAvailable = await s200.Printer.isPrinterAvailable();
+      if (!isPrinterAvailable) {
+        print('เครื่องพิมพ์ไม่พร้อมใช้งาน');
+        return;
+      }
+
+      // เคลียร์บัฟเฟอร์เก่า
+      await s200.Printer.clearPrintBuffer();
+
+      // 1. หัวร้าน (ใหญ่ กลาง หนา)
+      await s200.Printer.appendText(
+        text: "TEST STORE",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      // 2. ระยะห่าง
+      await s200.Printer.appendPaperFeed(height: 5);
+
+      // 3. เส้นคั่น
+      await s200.Printer.appendSeparatorLine();
+
+      // 4. ที่อยู่ร้าน
+      await s200.Printer.appendText(
+        text: "123 Test Street, Bangkok",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      await s200.Printer.appendText(
+        text: "Tel: 02-123-4567",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      // 5. เส้นคั่น
+      await s200.Printer.appendSeparatorLine();
+
+      // 6. รายการสินค้า (ชิดซ้าย)
+      await s200.Printer.appendText(
+        text: "RECEIPT TEST",
+        textAlign: s200.PrinterAlign.left,
+        fontSize: s200.PrinterFontSize.twentyFour,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 3);
+
+      // 7. รายการสินค้า 1
+      await s200.Printer.appendText(
+        text: "Item 1...................................100.00",
+        textAlign: s200.PrinterAlign.left,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      // 8. รายการสินค้า 2
+      await s200.Printer.appendText(
+        text: "Item 2...................................150.00",
+        textAlign: s200.PrinterAlign.left,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      // 9. รายการสินค้า 3
+      await s200.Printer.appendText(
+        text: "Item 3...................................200.00",
+        textAlign: s200.PrinterAlign.left,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      // 10. เส้นคั่น
+      await s200.Printer.appendSeparatorLine();
+
+      // 11. รวมเงิน (ชิดขวา)
+      await s200.Printer.appendText(
+        text: "TOTAL...................................450.00",
+        textAlign: s200.PrinterAlign.right,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      // 12. เส้นคั่น
+      await s200.Printer.appendSeparatorLine();
+
+      // 13. วันที่และเวลา
+      await s200.Printer.appendPaperFeed(height: 5);
+
+      await s200.Printer.appendText(
+        text: DateTime.now().toString(),
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      await s200.Printer.appendText(
+        text: "Serial: $serialNumber",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
+
+      // 14. Barcode
+      await s200.Printer.appendPaperFeed(height: 10);
+      await s200.Printer.appendBarCode(
+        data: "1234567890",
+        pixelPoint: 2,
+        height: 100,
+        align: s200.PrinterAlign.center,
+      );
+
+      // 15. QR Code
+      await s200.Printer.appendPaperFeed(height: 10);
+      await s200.Printer.appendQrCode(
+        data: "https://flutter.dev",
+        width: 150,
+        height: 150,
+        leftOffset: 100,
+      );
+
+      // 16. จบใบเสร็จ
+      await s200.Printer.appendPaperFeed(height: 30);
+
+      // 17. ข้อความปิดท้าย
+      await s200.Printer.appendText(
+        text: "*** THANK YOU ***",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.twentyFour,
+        isBoldFont: true,
+      );
+
+      // เริ่มพิมพ์
+      final result = await s200.Printer.startPrint();
+      print('พิมพ์เสร็จสิ้น: $result');
+    } catch (e) {
+      print('เกิดข้อผิดพลาด: $e');
+      rethrow;
+    }
+  }
+
+  // ========== ฟังก์ชันทดสอบแยกแต่ละประเภท ==========
+
+  // ทดสอบพิมพ์ตัวหนังสือ
+  void testPrintText() async {
+    try {
+      await s200.Printer.clearPrintBuffer();
+
+      await s200.Printer.appendText(
+        text: "TEXT TEST - S200",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 10);
+
+      await s200.Printer.appendText(
+        text: "Normal size text",
+        textAlign: s200.PrinterAlign.left,
+      );
+
+      await s200.Printer.appendText(
+        text: "Bold text",
+        textAlign: s200.PrinterAlign.left,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendText(
+        text: "Right aligned",
+        textAlign: s200.PrinterAlign.right,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 30);
+      await s200.Printer.startPrint();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // ทดสอบพิมพ์ Barcode
+  void testPrintBarcode() async {
+    try {
+      await s200.Printer.clearPrintBuffer();
+
+      await s200.Printer.appendText(
+        text: "BARCODE TEST",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 10);
+
+      await s200.Printer.appendBarCode(
+        data: "1234567890",
+        pixelPoint: 2,
+        height: 80,
+        align: s200.PrinterAlign.center,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 30);
+      await s200.Printer.startPrint();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // ทดสอบพิมพ์ QR Code
+  void testPrintQR() async {
+    try {
+      await s200.Printer.clearPrintBuffer();
+
+      await s200.Printer.appendText(
+        text: "QR CODE TEST",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 10);
+
+      await s200.Printer.appendQrCode(
+        data: "https://flutter.dev/docs",
+        width: 150,
+        height: 150,
+        leftOffset: 80,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 30);
+      await s200.Printer.startPrint();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // ทดสอบพิมพ์รูปภาพ
+  void testPrintImage() async {
+    try {
+      await s200.Printer.clearPrintBuffer();
+
+      await s200.Printer.appendText(
+        text: "IMAGE TEST",
+        textAlign: s200.PrinterAlign.center,
+        fontSize: s200.PrinterFontSize.thirtySix,
+        isBoldFont: true,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 10);
+
+      final assetImage = await rootBundle.load("assets/wojak.jpg");
+      final bytes = Uint8List.view(assetImage.buffer);
+
+      await s200.Printer.appendImage(
+        byteArray: bytes,
+        align: s200.PrinterAlign.center,
+        sampleSize: 2,
+      );
+
+      await s200.Printer.appendPaperFeed(height: 30);
+      await s200.Printer.startPrint();
+    } catch (e) {
+      rethrow;
+    }
   }
 }

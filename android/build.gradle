@@ -1,4 +1,4 @@
-group 'com.philaphonh.flutter_sunyard_i80'
+group 'com.philaphonh.flutter_sunyard_s200'
 version '1.0-SNAPSHOT'
 
 allprojects {
@@ -12,7 +12,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    namespace 'com.philaphonh.flutter_sunyard_i80'
+    namespace 'com.philaphonh.flutter_sunyard_s200'
     compileSdkVersion 35
 
     compileOptions {
