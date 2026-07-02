@@ -11,11 +11,17 @@ class DeviceMethodCallHandler(deviceModule: DeviceModule): MethodCallHandler {
         this.deviceModule = deviceModule
     }
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        android.util.Log.d("S200_DeviceHandler", "Method called: ${call.method}")
         when(call.method) {
             deviceModule.isAvailableString -> {
-                result.success(deviceModule.isAvailable())
+                val available = deviceModule.isAvailable()
+                android.util.Log.d("S200_DeviceHandler", "isAvailable result: $available")
+                result.success(available)
             }
-            else -> result.notImplemented()
+            else -> {
+                android.util.Log.w("S200_DeviceHandler", "Method not implemented: ${call.method}")
+                result.notImplemented()
+            }
         }
     }
 }

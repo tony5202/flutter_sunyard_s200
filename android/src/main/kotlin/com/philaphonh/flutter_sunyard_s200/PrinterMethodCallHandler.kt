@@ -16,11 +16,15 @@ class PrinterMethodCallHandler(printerModule: PrinterModule) : MethodCallHandler
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        android.util.Log.d("S200_PrinterHandler", "Method called: ${call.method}")
         when (call.method) {
             printerModule.isPrinterAvailableMethodString -> {
                 try {
-                    result.success(printerModule.isPrinterAvailable())
+                    val available = printerModule.isPrinterAvailable()
+                    android.util.Log.d("S200_PrinterHandler", "isPrinterAvailable result: $available")
+                    result.success(available)
                 } catch (e: SDKException) {
+                    android.util.Log.e("S200_PrinterHandler", "isPrinterAvailable error: ${e.message}", e)
                     result.error(e.errCode, e.message, null)
                 }
             }

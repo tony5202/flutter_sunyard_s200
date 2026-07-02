@@ -7,6 +7,8 @@ class DeviceModule {
 
     /** Check if this device is the Sunyard S200 or not */
     fun isAvailable(): Boolean {
-        return System.getProperty("http.agent").contains("S200");
+        val model = android.os.Build.MODEL
+        android.util.Log.d("S200_Device", "Build.MODEL: $model")
+        return model.contains("S200", ignoreCase = true);
     }
 }

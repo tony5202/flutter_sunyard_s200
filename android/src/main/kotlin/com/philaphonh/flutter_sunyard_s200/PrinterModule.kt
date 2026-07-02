@@ -46,7 +46,9 @@ class PrinterModule {
 
     /** Whether printer is available or not. */
     fun isPrinterAvailable(): Boolean {
-        return printerInstance.havePrinter()
+        val hasPrinter = printerInstance.havePrinter()
+        android.util.Log.d("S200_PrinterModule", "havePrinter result: $hasPrinter")
+        return hasPrinter
     }
 
     /** Append text entity to print buffer. */

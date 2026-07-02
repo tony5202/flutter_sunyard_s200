@@ -13,11 +13,16 @@ class TerminalInfoMethodCallHandler(terminalInfoModule: TerminalInfoModule): Met
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        android.util.Log.d("S200_TerminalHandler", "Method called: ${call.method}")
         when (call.method) {
             terminalInfoModule.snGetterString -> {
+                android.util.Log.d("S200_TerminalHandler", "Serial number: ${terminalInfoModule.serialNumber}")
                 result.success(terminalInfoModule.serialNumber)
             }
-            else -> result.notImplemented()
+            else -> {
+                android.util.Log.w("S200_TerminalHandler", "Method not implemented: ${call.method}")
+                result.notImplemented()
+            }
         }
     }
 }
