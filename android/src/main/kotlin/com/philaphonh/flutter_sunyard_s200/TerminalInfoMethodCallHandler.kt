@@ -1,4 +1,4 @@
-package com.philaphonh.flutter_sunyard_i80
+package com.philaphonh.flutter_sunyard_s200
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

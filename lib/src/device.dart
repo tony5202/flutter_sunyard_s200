@@ -8,7 +8,7 @@ class Device {
   
   static const String _isAvailableMethodString = "isAvailable";
 
-  /// Whether the device is Sunyard i80 or not
+  /// Whether the device is Sunyard S200 or not
   static Future<bool> isAvailable() async {
     try {
       final result = await _methodChannel.invokeMethod(_isAvailableMethodString);

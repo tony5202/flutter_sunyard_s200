@@ -1,4 +1,4 @@
-package com.philaphonh.flutter_sunyard_i80
+package com.philaphonh.flutter_sunyard_s200
 
 import com.socsi.smartposapi.terminal.TerminalManager
 

@@ -1,6 +1,6 @@
-# flutter_sunyard_i80_example
+# flutter_sunyard_s200_example
 
-Demonstrates how to use the flutter_sunyard_i80 plugin.
+Demonstrates how to use the flutter_sunyard_s200 plugin.
 
 ## Getting Started
 

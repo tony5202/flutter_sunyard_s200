@@ -1,6 +1,6 @@
-# flutter_sunyard_i80
+# flutter_sunyard_s200
 
-A Flutter plugin that helps you utilize functionalities on a Sunyard i80 EDC POS terminal.
+A Flutter plugin that helps you utilize functionalities on a Sunyard S200 EDC POS terminal.
 
 ## Features
 
@@ -14,15 +14,15 @@ A Flutter plugin that helps you utilize functionalities on a Sunyard i80 EDC POS
 Add this line to your `pubspec.yaml` file:
 
 ```yaml
-flutter_sunyard_i80: ^1.0.0
+flutter_sunyard_s200: ^1.0.0
 ```
 
 Alternatively, you can add these lines if you want to install it directly from the GitHub repo:
 
 ```yaml
-flutter_sunyard_i80:
+flutter_sunyard_s200:
   git: 
-    url: https://github.com/philaphonh/flutter_sunyard_i80.git
+    url: https://github.com/philaphonh/flutter_sunyard_s200.git
     ref: main
 ```
 
@@ -31,9 +31,9 @@ flutter_sunyard_i80:
 It is recommended to check the printer status before printing:
 
 ```dart
-import 'package:flutter_sunyard_i80/flutter_sunyard_i80.dart' as i80;
+import 'package:flutter_sunyard_s200/flutter_sunyard_s200.dart' as s200;
 
-final isPrinterAvailable = await i80.Printer.isPrinterAvailable();
+final isPrinterAvailable = await s200.Printer.isPrinterAvailable();
 
 if (isPrinterAvailable) {
   // Do stuffs here...
@@ -114,9 +114,9 @@ To retrieve the device's serial number:
 
 ```dart
 String serialNumber = "";
-final isDeviceAvailable = await i80.Device.isAvailable();
+final isDeviceAvailable = await s200.Device.isAvailable();
 
 if (isDeviceAvailable) {
-  serialNumber = await i80.TerminalInfo.serialNumber;
+  serialNumber = await s200.TerminalInfo.serialNumber;
 }
 ```

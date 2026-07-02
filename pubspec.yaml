@@ -1,7 +1,7 @@
-name: flutter_sunyard_i80
-description: A Flutter plugin that helps you utilize functionalities on Sunyard i80 EDC POS terminal
-version: 1.1.0
-homepage: https://github.com/philaphonh/flutter_sunyard_i80
+name: flutter_sunyard_s200
+description: A Flutter plugin that helps you utilize functionalities on S200 EDC POS terminal
+version: 1.0.0
+homepage: https://github.com/philaphonh/flutter_sunyard_s200
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
@@ -35,8 +35,8 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.philaphonh.flutter_sunyard_i80
-        pluginClass: FlutterSunyardI80Plugin
+        package: com.philaphonh.flutter_sunyard_s200
+        pluginClass: FlutterSunyardS200Plugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_sunyard_i80/flutter_sunyard_i80.dart' as i80;
+import 'package:flutter_sunyard_s200/flutter_sunyard_s200.dart' as s200;
 
 void main() {
   runApp(const MyApp());
@@ -28,9 +28,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initPage() async {
-    final isDeviceAvailable = await i80.Device.isAvailable();
-    final isPrinterAvailable = await i80.Printer.isPrinterAvailable();
-    serialNumber = await i80.TerminalInfo.serialNumber;
+    final isDeviceAvailable = await s200.Device.isAvailable();
+    final isPrinterAvailable = await s200.Printer.isPrinterAvailable();
+    serialNumber = await s200.TerminalInfo.serialNumber;
     if (isDeviceAvailable) {
       setState(() {
         this.isDeviceAvailable = isDeviceAvailable;
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('flutter_sunyard_i80 Example'),
+          title: const Text('flutter_sunyard_s200 Example'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -121,29 +121,29 @@ class _MyAppState extends State<MyApp> {
 
   void printText() async {
     try {
-      await i80.Printer.appendText(
+      await s200.Printer.appendText(
         text: "Flutter",
-        textAlign: i80.PrinterAlign.left,
+        textAlign: s200.PrinterAlign.left,
       );
 
-      await i80.Printer.appendText(
+      await s200.Printer.appendText(
         text: "Flutter",
-        textAlign: i80.PrinterAlign.right,
+        textAlign: s200.PrinterAlign.right,
       );
 
-      await i80.Printer.appendText(
+      await s200.Printer.appendText(
         text: "Flutter",
-        textAlign: i80.PrinterAlign.left,
+        textAlign: s200.PrinterAlign.left,
         isBoldFont: true,
       );
-      await i80.Printer.appendText(
+      await s200.Printer.appendText(
         text: "Flutter",
-        textAlign: i80.PrinterAlign.right,
+        textAlign: s200.PrinterAlign.right,
         isLineBreak: false,
-        fontSize: i80.PrinterFontSize.thirtySix,
+        fontSize: s200.PrinterFontSize.thirtySix,
       );
 
-      await i80.Printer.startPrint();
+      await s200.Printer.startPrint();
     } catch (e) {
       rethrow;
     }
@@ -155,33 +155,33 @@ class _MyAppState extends State<MyApp> {
 
     final bytes = Uint8List.view(assetImage.buffer);
 
-    await i80.Printer.appendImage(
+    await s200.Printer.appendImage(
       byteArray: bytes,
-      align: i80.PrinterAlign.right,
+      align: s200.PrinterAlign.right,
     );
 
-    await i80.Printer.appendImage(
+    await s200.Printer.appendImage(
       byteArray: bytes,
-      align: i80.PrinterAlign.left,
+      align: s200.PrinterAlign.left,
       sampleSize: 2,
     );
 
-    await i80.Printer.startPrint();
+    await s200.Printer.startPrint();
   }
 
   void printBarcode() async {
-    await i80.Printer.appendBarCode(data: "1234567890");
+    await s200.Printer.appendBarCode(data: "1234567890");
 
-    await i80.Printer.startPrint();
+    await s200.Printer.startPrint();
   }
 
   void printQr() async {
-    await i80.Printer.appendQrCode(
+    await s200.Printer.appendQrCode(
       data: "https://artyboy.dev",
       width: 100,
       height: 100,
     );
 
-    await i80.Printer.startPrint();
+    await s200.Printer.startPrint();
   }
 }

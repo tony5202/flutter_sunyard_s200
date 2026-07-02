@@ -1,12 +1,12 @@
-package com.philaphonh.flutter_sunyard_i80
+package com.philaphonh.flutter_sunyard_s200
 
 import com.socsi.smartposapi.DeviceMaster
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodChannel
 
-/** FlutterSunyardI80Plugin */
-class FlutterSunyardI80Plugin: FlutterPlugin {
+/** FlutterSunyardS200Plugin */
+class FlutterSunyardS200Plugin: FlutterPlugin {
   /** Method channel for [PrinterModule] */
   private var printerChannel: MethodChannel? = null
 

@@ -1,4 +1,4 @@
-/// A Flutter library that help you utilize functionalities on the Sunyard i80 terminal.
+/// A Flutter library that help you utilize functionalities on the Sunyard S200 terminal.
 library;
 
 export 'src/device.dart';
