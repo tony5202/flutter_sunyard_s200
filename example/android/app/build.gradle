@@ -50,6 +50,11 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // Only build for armeabi-v7a since S200 device uses this ABI
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     buildTypes {

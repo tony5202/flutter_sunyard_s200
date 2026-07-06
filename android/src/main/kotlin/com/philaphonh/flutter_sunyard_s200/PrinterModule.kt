@@ -11,11 +11,28 @@ import com.socsi.smartposapi.printer.TextEntity
 
 /** A module to utilize printer functionality. */
 class PrinterModule {
+    init {
+        android.util.Log.e("S200_PrinterModule", "=== PRINTER MODULE INITIALIZED ===")
+    }
+
     /** An instance of [Printer2].
      * Since getting an instance with context will cause SharedPreferences issue,
      * I have to get an instance from deprecated method instead.
      * */
-    private var printerInstance: Printer2 = Printer2.getInstance()
+    private var printerInstance: Printer2? = null
+
+    /** Get printer instance lazily */
+    private fun getPrinter(): Printer2? {
+        if (printerInstance == null) {
+            try {
+                printerInstance = Printer2.getInstance()
+                android.util.Log.d("S200_PrinterModule", "Printer instance created")
+            } catch (e: Exception) {
+                android.util.Log.e("S200_PrinterModule", "Error getting printer instance: ${e.message}", e)
+            }
+        }
+        return printerInstance
+    }
 
     /** Method string of [isPrinterAvailable]. */
     val isPrinterAvailableMethodString = "isPrinterAvailable"
@@ -46,13 +63,24 @@ class PrinterModule {
 
     /** Whether printer is available or not. */
     fun isPrinterAvailable(): Boolean {
-        val hasPrinter = printerInstance.havePrinter()
-        android.util.Log.d("S200_PrinterModule", "havePrinter result: $hasPrinter")
-        return hasPrinter
+        try {
+            val printer = getPrinter() ?: return false
+            val hasPrinter = printer.havePrinter()
+            android.util.Log.d("S200_PrinterModule", "havePrinter result: $hasPrinter")
+            return hasPrinter
+        } catch (e: Exception) {
+            android.util.Log.e("S200_PrinterModule", "Error checking printer availability: ${e.message}", e)
+            return false
+        }
     }
 
     /** Append text entity to print buffer. */
     fun appendText(text: String, isBold: Boolean, isLineBreak: Boolean, align: Align, fontSize: FontLattice): Int {
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendText")
+            return -1
+        }
         val textEntity = TextEntity()
         textEntity.text = text
         textEntity.fontsize = fontSize
@@ -61,47 +89,82 @@ class PrinterModule {
         textEntity.isLineBreak = isLineBreak
         textEntity.fontsize = fontSize
 
-        return printerInstance.appendTextEntity2(textEntity)
+        return printer.appendTextEntity2(textEntity)
     }
 
     /** Append image data to print buffer. */
     fun appendImage(byteArray: ByteArray, align: Align, sampleSize: Int): Int {
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendImage")
+            return -1
+        }
         val bitmapOptions = BitmapFactory.Options()
         bitmapOptions.inSampleSize = sampleSize
 
         val bitmap: Bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size, bitmapOptions)
 
-        return printerInstance.appendImage(bitmap, align)
+        return printer.appendImage(bitmap, align)
     }
 
     /** Append barcode to print buffer. */
     fun appendBarCode(data: String, pixelPoint: Int, height: Int, align: Align): Int {
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendBarCode")
+            return -1
+        }
         // This printer supports only 128
-        return printerInstance.appendBarCodeByPixel(pixelPoint, height, align, 128, data)
+        return printer.appendBarCodeByPixel(pixelPoint, height, align, 128, data)
     }
 
     /** Append single QR code to print buffer. */
     fun appendQrCode(data: String, width: Int, height: Int, leftOffset: Int): Int {
-        return printerInstance.appendQrCode(width, height, leftOffset, data)
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendQrCode")
+            return -1
+        }
+        return printer.appendQrCode(width, height, leftOffset, data)
     }
 
     /** Append paper feed to print buffer. */
     fun appendPaperFeed(type: Int, height: Int): String {
-        return printerInstance.appendTakePaper(type, height).name
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendPaperFeed")
+            return "ERROR"
+        }
+        return printer.appendTakePaper(type, height).name
     }
 
     /** Append a separator line to print buffer. */
     fun appendSeparatorLine(): Int {
-        return printerInstance.appendTextEntity2(printerInstance.separatorLinetEntity)
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for appendSeparatorLine")
+            return -1
+        }
+        return printer.appendTextEntity2(printer.separatorLinetEntity)
     }
 
     /** Clear current print buffer. */
     fun clearPrintBuffer() {
-        printerInstance.printBuffer.clear()
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for clearPrintBuffer")
+            return
+        }
+        printer.printBuffer.clear()
     }
 
     /** Start printing operation. */
     fun startPrint(): String {
-        return printerInstance.startPrint().name
+        val printer = getPrinter()
+        if (printer == null) {
+            android.util.Log.e("S200_PrinterModule", "Printer not available for startPrint")
+            return "ERROR"
+        }
+        return printer.startPrint().name
     }
 }

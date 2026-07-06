@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Declare queries for system services we need to bind to -->
+    <queries>
+        <package android:name="com.sunyard.deviceservice"/>
+    </queries>
 </manifest>

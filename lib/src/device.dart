@@ -2,10 +2,10 @@ import 'package:flutter/services.dart';
 
 /// A class for device status
 class Device {
-  static const MethodChannel _methodChannel = MethodChannel(_methodChannelName);
-  
   static const String _methodChannelName = "device";
-  
+
+  static final MethodChannel _methodChannel = MethodChannel(_methodChannelName);
+
   static const String _isAvailableMethodString = "isAvailable";
 
   /// Whether the device is Sunyard S200 or not

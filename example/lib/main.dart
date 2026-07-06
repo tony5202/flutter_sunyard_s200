@@ -285,7 +285,11 @@ class _MyAppState extends State<MyApp> {
       );
 
       await s200.Printer.appendPaperFeed(height: 3);
-
+      await s200.Printer.appendText(
+        text: "Tony ....DER",
+        textAlign: s200.PrinterAlign.left,
+        fontSize: s200.PrinterFontSize.twentyFour,
+      );
       // 7. รายการสินค้า 1
       await s200.Printer.appendText(
         text: "Item 1...................................100.00",
