@@ -233,20 +233,16 @@ class _MyAppState extends State<MyApp> {
     await s200.Printer.startPrint();
   }
 
-  // ========== ฟังก์ชันทดสอบพิมพ์แบบครบทุกฟีเจอร์ ==========
   void printFullTestReceipt() async {
     try {
-      // ตรวจสอบว่าเครื่องพิมพ์พร้อม
       final isPrinterAvailable = await s200.Printer.isPrinterAvailable();
       if (!isPrinterAvailable) {
-        print('เครื่องพิมพ์ไม่พร้อมใช้งาน');
+        print('printer not available');
         return;
       }
 
-      // เคลียร์บัฟเฟอร์เก่า
       await s200.Printer.clearPrintBuffer();
 
-      // 1. หัวร้าน (ใหญ่ กลาง หนา)
       await s200.Printer.appendText(
         text: "TEST STORE",
         textAlign: s200.PrinterAlign.center,
@@ -254,13 +250,10 @@ class _MyAppState extends State<MyApp> {
         isBoldFont: true,
       );
 
-      // 2. ระยะห่าง
       await s200.Printer.appendPaperFeed(height: 5);
 
-      // 3. เส้นคั่น
       await s200.Printer.appendSeparatorLine();
 
-      // 4. ที่อยู่ร้าน
       await s200.Printer.appendText(
         text: "123 Test Street, Bangkok",
         textAlign: s200.PrinterAlign.center,
@@ -273,10 +266,8 @@ class _MyAppState extends State<MyApp> {
         fontSize: s200.PrinterFontSize.twentyFour,
       );
 
-      // 5. เส้นคั่น
       await s200.Printer.appendSeparatorLine();
 
-      // 6. รายการสินค้า (ชิดซ้าย)
       await s200.Printer.appendText(
         text: "RECEIPT TEST",
         textAlign: s200.PrinterAlign.left,
@@ -290,14 +281,13 @@ class _MyAppState extends State<MyApp> {
         textAlign: s200.PrinterAlign.left,
         fontSize: s200.PrinterFontSize.twentyFour,
       );
-      // 7. รายการสินค้า 1
+
       await s200.Printer.appendText(
         text: "Item 1...................................100.00",
         textAlign: s200.PrinterAlign.left,
         fontSize: s200.PrinterFontSize.twentyFour,
       );
 
-      // 8. รายการสินค้า 2
       await s200.Printer.appendText(
         text: "Item 2...................................150.00",
         textAlign: s200.PrinterAlign.left,
@@ -311,10 +301,8 @@ class _MyAppState extends State<MyApp> {
         fontSize: s200.PrinterFontSize.twentyFour,
       );
 
-      // 10. เส้นคั่น
       await s200.Printer.appendSeparatorLine();
 
-      // 11. รวมเงิน (ชิดขวา)
       await s200.Printer.appendText(
         text: "TOTAL...................................450.00",
         textAlign: s200.PrinterAlign.right,
@@ -322,10 +310,8 @@ class _MyAppState extends State<MyApp> {
         isBoldFont: true,
       );
 
-      // 12. เส้นคั่น
       await s200.Printer.appendSeparatorLine();
 
-      // 13. วันที่และเวลา
       await s200.Printer.appendPaperFeed(height: 5);
 
       await s200.Printer.appendText(
@@ -358,10 +344,8 @@ class _MyAppState extends State<MyApp> {
         leftOffset: 100,
       );
 
-      // 16. จบใบเสร็จ
       await s200.Printer.appendPaperFeed(height: 30);
 
-      // 17. ข้อความปิดท้าย
       await s200.Printer.appendText(
         text: "*** THANK YOU ***",
         textAlign: s200.PrinterAlign.center,
@@ -369,18 +353,14 @@ class _MyAppState extends State<MyApp> {
         isBoldFont: true,
       );
 
-      // เริ่มพิมพ์
       final result = await s200.Printer.startPrint();
-      print('พิมพ์เสร็จสิ้น: $result');
+      print('printrd: $result');
     } catch (e) {
-      print('เกิดข้อผิดพลาด: $e');
+      print('erorr: $e');
       rethrow;
     }
   }
 
-  // ========== ฟังก์ชันทดสอบแยกแต่ละประเภท ==========
-
-  // ทดสอบพิมพ์ตัวหนังสือ
   void testPrintText() async {
     try {
       await s200.Printer.clearPrintBuffer();
@@ -417,7 +397,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // ทดสอบพิมพ์ Barcode
   void testPrintBarcode() async {
     try {
       await s200.Printer.clearPrintBuffer();
@@ -445,7 +424,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // ทดสอบพิมพ์ QR Code
   void testPrintQR() async {
     try {
       await s200.Printer.clearPrintBuffer();
